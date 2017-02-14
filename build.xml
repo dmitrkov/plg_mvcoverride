@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="build_plg_mvcoverride" default="build" basedir=".">
+
+    <property name="src_dir" value="" />
+    <property name="res_dir" value="../../../" />
+
+    <target name="plg_mvcoverride">
+        <echo>============= plugin plg_mvcoverride =============</echo>
+        <!-- Read the installation xml-file. The prefix is needed to delineate extensions. -->
+        <xmlproperty file="${src_dir}mvcoverride.xml" prefix="plg_mvcoverride." keepRoot="false" />
+
+        <zip destfile="${res_dir}cache/plg_mvcoverride.zip">
+            <fileset dir="${res_dir}Projects/nksBillingPA/plg_mvcoverride" >
+                <include name="**/**" />
+                <exclude name="build.xml"/>
+                <exclude name="README.md"/>
+                <exclude name=".idea/**"/>
+                <exclude name=".git/**"/>
+            </fileset>
+        </zip>
+        <tstamp>
+            <format property="plg_mvcoverride.timestamp" pattern="%Y%m%d%H%M%S" />
+        </tstamp>
+        <!-- Create a setup file with a version number. Read Number of xml-file -->
+        <copy file="${res_dir}cache/plg_mvcoverride.zip" tofile="${res_dir}/Out/plg_mvcoverride-${plg_mvcoverride.version}-${plg_mvcoverride.timestamp}.zip" overwrite="true"/>
+    </target>
+
+    <target name="build" depends="plg_mvcoverride">
+        <echo>============= Package Build =============</echo>
+        <delete file="${res_dir}cache/plg_mvcoverride.zip" />
+    </target>
+
+</project>
